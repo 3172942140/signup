@@ -207,6 +207,34 @@
             display: flex;
             gap: 1rem;
             margin: 1rem 0;
+            position: relative;
+        }
+
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--accent);
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        .loading .loading-spinner {
+            display: block;
+        }
+
+        .loading .countdown-item {
+            visibility: hidden;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         .countdown-item {
@@ -365,7 +393,8 @@
         
         <div class="card countdown pixel-corners">
             <div class="countdown-title">距离报名开始还有</div>
-            <div class="countdown-timer">
+            <div class="countdown-timer loading">
+                <div class="loading-spinner"></div>
                 <div class="countdown-item">
                     <span id="days" class="countdown-number">00</span>
                     <span class="countdown-label">天</span>
@@ -396,15 +425,12 @@
     </div>
 
     <script>
-        // 设置倒计时目标日期（15天后）
-        const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 15);
+        // 设置倒计时目标日期为2025年4月15日
+        const targetDate = new Date('2025-03-15T00:00:00+08:00');
+        let serverTimeOffset = 0;
         
-        // 更新倒计时
-        function updateCountdown() {
-            const currentDate = new Date();
-            const difference = targetDate - currentDate;
-            
+        // 更新倒计时显示
+        function updateCountdownDisplay(difference) {
             if (difference <= 0) {
                 // 倒计时结束
                 document.getElementById('days').textContent = '00';
@@ -430,12 +456,35 @@
             document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
+
+        // 初始化倒计时
+        async function initCountdown() {
+            try {
+                // 获取服务器时间
+                const response = await fetch('http://worldtimeapi.org/api/timezone/Asia/Shanghai');
+                const data = await response.json();
+                const serverDate = new Date(data.datetime);
+                serverTimeOffset = serverDate.getTime() - Date.now();
+            } catch (error) {
+                console.error('获取服务器时间时出错:', error);
+                serverTimeOffset = 0;
+            }
+            
+            document.querySelector('.countdown-timer').classList.remove('loading');
+            updateCountdown();
+            // 每秒更新一次
+            setInterval(updateCountdown, 1000);
+        }
+
+        // 更新倒计时
+        function updateCountdown() {
+            const currentDate = new Date(Date.now() + serverTimeOffset);
+            const difference = targetDate - currentDate;
+            updateCountdownDisplay(difference);
+        }
         
-        // 初始更新
-        updateCountdown();
-        
-        // 每秒更新一次
-        setInterval(updateCountdown, 1000);
+        // 初始化
+        initCountdown();
     </script>
 </body>
 </html>
