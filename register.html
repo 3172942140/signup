@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <title>郑州轻工业大学第二届Major赛事报名表单</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4655;
+            --primary-dark: #cc3644;
+            --secondary: #0f1923;
+            --secondary-light: #1a2530;
+            --accent: #28b0e5;
+            --accent-dark: #1a8cb8;
+            --text: #ffffff;
+            --text-secondary: #b3b3b3;
+            --success: #52e3a0;
+            --warning: #ffce56;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary);
+            color: var(--text);
+            font-family: 'Noto Sans SC', 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat fixed;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .background-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(40, 176, 229, 0.05) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(40, 176, 229, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 1000px;
+            width: 100%;
+            z-index: 1;
+            margin-top: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            margin: 1rem 0;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            transform: skew(-5deg);
+        }
+
+        .form-container {
+            background: rgba(15, 25, 35, 0.8);
+            border: 2px solid var(--accent);
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(40, 176, 229, 0.2);
+        }
+
+        .form-section {
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--secondary-light);
+            border: 1px solid var(--accent);
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(255, 70, 85, 0.3);
+        }
+
+        .player-card {
+            background: rgba(40, 176, 229, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent);
+        }
+
+        .player-title {
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .submit-btn {
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 70, 85, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(255, 70, 85, 0.3);
+        }
+
+        .pixel-corners {
+            clip-path: polygon(
+                0 10px,
+                10px 0,
+                calc(100% - 10px) 0,
+                100% 10px,
+                100% calc(100% - 10px),
+                calc(100% - 10px) 100%,
+                10px 100%,
+                0 calc(100% - 10px)
+            );
+        }
+
+        .success-message {
+            background: rgba(82, 227, 160, 0.2);
+            border-left: 4px solid var(--success);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            display: none;
+            text-align: left;
+        }
+
+        .success-message h3 {
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .title {
+                font-size: 2rem;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 页脚样式 */
+        .footer {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            width: 100%;
+            background: rgba(15, 25, 35, 0.8);
+            border-top: 2px solid var(--accent);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .official-link {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .official-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-grid"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1 class="title pixel-corners">CS2 Major赛事报名表单</h1>
+        </div>
+        
+        <form class="form-container pixel-corners" id="registerForm">
+            <div class="form-section">
+                <h2 class="section-title">队伍信息</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="teamName">队伍名称</label>
+                        <input type="text" id="teamName" name="teamName" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="teamEmail">QQ邮箱</label>
+                        <input type="email" id="teamEmail" name="teamEmail" required pattern="[\w.]+@qq\.com$" title="请输入有效的QQ邮箱地址">
+                    </div>
+                    <div class="form-group">
+                        <label for="teamPhone">手机号码（需同微信）</label>
+                        <input type="tel" id="teamPhone" name="teamPhone" required pattern="^1[3-9]\d{9}$" title="请输入有效的11位手机号码">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">队长信息（主力队员1）</h2>
+                <div class="player-card pixel-corners">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="captain_name">真实姓名</label>
+                            <input type="text" id="captain_name" name="players[0].name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="captain_studentId">学号</label>
+                            <input type="text" id="captain_studentId" name="players[0].studentId" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="captain_gameId">游戏ID</label>
+                            <input type="text" id="captain_gameId" name="players[0].gameId" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="captain_rank">游戏段位</label>
+                            <input type="text" id="captain_rank" name="players[0].rank" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">主力队员（2-5号位）</h2>
+                <div id="mainPlayers">
+                    <!-- 主力队员2 -->
+                    <div class="player-card pixel-corners">
+                        <div class="player-title">2号位</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="player2_name">真实姓名</label>
+                                <input type="text" id="player2_name" name="players[1].name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="player2_studentId">学号</label>
+                                <input type="text" id="player2_studentId" name="players[1].studentId" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="player2_gameId">游戏ID</label>
+                                <input type="text" id="player2_gameId" name="players[1].gameId" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="player2_rank">游戏段位</label>
+                                <input type="text" id="player2_rank" name="players[1].rank" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 主力队员3 -->
+                    <div class="player-card pixel-corners">
+                        <div class="player-title">3号位</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="player3_name">真实姓名</label>
+                                <input type="text" id="player3_name" name="players[2].name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="player3_studentId">学号</label>
+                                <input type="text" id="player3_studentId" name="players[2].studentId" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="player3_gameId">游戏ID</label>
+                                <input type="text" id="player3_gameId" name="players[2].gameId" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="player3_rank">游戏段位</label>
+                                <input type="text" id="player3_rank" name="players[2].rank" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 主力队员4 -->
+                    <div class="player-card pixel-corners">
+                        <div class="player-title">4号位</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="player4_name">真实姓名</label>
+                                <input type="text" id="player4_name" name="players[3].name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="player4_studentId">学号</label>
+                                <input type="text" id="player4_studentId" name="players[3].studentId" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="player4_gameId">游戏ID</label>
+                                <input type="text" id="player4_gameId" name="players[3].gameId" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="player4_rank">游戏段位</label>
+                                <input type="text" id="player4_rank" name="players[3].rank" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 主力队员5 -->
+                    <div class="player-card pixel-corners">
+                        <div class="player-title">5号位</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="player5_name">真实姓名</label>
+                                <input type="text" id="player5_name" name="players[4].name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="player5_studentId">学号</label>
+                                <input type="text" id="player5_studentId" name="players[4].studentId" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="player5_gameId">游戏ID</label>
+                                <input type="text" id="player5_gameId" name="players[4].gameId" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="player5_rank">游戏段位</label>
+                                <input type="text" id="player5_rank" name="players[4].rank" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="section-title">替补队员（可选）</h2>
+                <div class="player-card pixel-corners">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sub_name">真实姓名</label>
+                            <input type="text" id="sub_name" name="players[5].name">
+                        </div>
+                        <div class="form-group">
+                            <label for="sub_studentId">学号</label>
+                            <input type="text" id="sub_studentId" name="players[5].studentId">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sub_gameId">游戏ID</label>
+                            <input type="text" id="sub_gameId" name="players[5].gameId">
+                        </div>
+                        <div class="form-group">
+                            <label for="sub_rank">游戏段位</label>
+                            <input type="text" id="sub_rank" name="players[5].rank">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn pixel-corners">
+                <i class="fas fa-paper-plane"></i> 提交报名
+            </button>
+        </form>
+
+        <div class="success-message pixel-corners" id="successMessage">
+            <h3><i class="fas fa-check-circle"></i> 报名成功！</h3>
+            <p>您的队伍已成功报名CS2 Major赛事。我们将通过邮件通知您后续赛事安排。</p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>访问 <a href="https://zzulics.pages.dev/" target="_blank" class="official-link"><i class="fas fa-external-link-alt"></i> 郑州轻工业大学CS赛事官方网站</a></p>
+            <p class="copyright">© 2025 郑州轻工业大学第二届Major赛事组委会</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 表单验证
+            const form = this;
+            const isValid = form.checkValidity();
+            
+            if (isValid) {
+                // 收集表单数据
+                const formData = {
+                    teamName: document.getElementById('teamName').value,
+                    teamEmail: document.getElementById('teamEmail').value,
+                    teamPhone: document.getElementById('teamPhone').value,
+                    players: [
+                        {
+                            name: document.getElementById('captain_name').value,
+                            studentId: document.getElementById('captain_studentId').value,
+                            gameId: document.getElementById('captain_gameId').value,
+                            rank: document.getElementById('captain_rank').value,
+                            isCaption: true
+                        },
+                        {
+                            name: document.getElementById('player2_name').value,
+                            studentId: document.getElementById('player2_studentId').value,
+                            gameId: document.getElementById('player2_gameId').value,
+                            rank: document.getElementById('player2_rank').value
+                        },
+                        {
+                            name: document.getElementById('player3_name').value,
+                            studentId: document.getElementById('player3_studentId').value,
+                            gameId: document.getElementById('player3_gameId').value,
+                            rank: document.getElementById('player3_rank').value
+                        },
+                        {
+                            name: document.getElementById('player4_name').value,
+                            studentId: document.getElementById('player4_studentId').value,
+                            gameId: document.getElementById('player4_gameId').value,
+                            rank: document.getElementById('player4_rank').value
+                        },
+                        {
+                            name: document.getElementById('player5_name').value,
+                            studentId: document.getElementById('player5_studentId').value,
+                            gameId: document.getElementById('player5_gameId').value,
+                            rank: document.getElementById('player5_rank').value
+                        }
+                    ]
+                };
+                
+                // 添加替补队员（如果有）
+                const subName = document.getElementById('sub_name').value;
+                if (subName) {
+                    formData.players.push({
+                        name: subName,
+                        studentId: document.getElementById('sub_studentId').value,
+                        gameId: document.getElementById('sub_gameId').value,
+                        rank: document.getElementById('sub_rank').value,
+                        isSubstitute: true
+                    });
+                }
+                
+                // 在实际应用中，这里应该发送数据到服务器
+                console.log('提交的数据:', formData);
+                
+                // 显示成功消息
+                document.getElementById('successMessage').style.display = 'block';
+                form.reset();
+                
+                // 滚动到成功消息
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>

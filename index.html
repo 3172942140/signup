@@ -379,6 +379,43 @@
                 font-size: 1.2rem;
             }
         }
+
+        /* 页脚样式 */
+        .footer {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            width: 100%;
+            background: rgba(15, 25, 35, 0.8);
+            border-top: 2px solid var(--accent);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .official-link {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .official-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -419,13 +456,25 @@
             当前状态：暂未开始
         </div>
 
-        <button class="register-btn pixel-corners">
-            <i class="fas fa-gamepad"></i> 立即报名
-        </button>
+        <div style="display: flex; gap: 1rem; justify-content: center; margin: 2rem 0;">
+            <a href="event-info.html" class="register-btn pixel-corners active" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--accent);">
+                <i class="fas fa-info-circle"></i> 赛事详情
+            </a>
+            <button class="register-btn pixel-corners" id="registerBtn">
+                <i class="fas fa-gamepad"></i> 立即报名
+            </button>
+        </div>
     </div>
 
+    <footer class="footer">
+        <div class="footer-content">
+            <p>访问 <a href="https://zzulics.pages.dev/" target="_blank" class="official-link"><i class="fas fa-external-link-alt"></i> 郑州轻工业大学CS赛事官方网站</a></p>
+            <p class="copyright">© 2025 郑州轻工业大学第二届Major赛事组委会</p>
+        </div>
+    </footer>
+
     <script>
-        // 设置倒计时目标日期为2025年4月15日
+        // 设置倒计时目标日期为2025年3月15日
         const targetDate = new Date('2025-03-15T00:00:00+08:00');
         let serverTimeOffset = 0;
         
@@ -485,6 +534,14 @@
         
         // 初始化
         initCountdown();
+        
+        // 添加报名按钮点击事件
+        document.getElementById('registerBtn').addEventListener('click', function() {
+            // 只有当按钮处于激活状态时才跳转
+            if (this.classList.contains('active')) {
+                window.location.href = 'register.html';
+            }
+        });
     </script>
 </body>
 </html>

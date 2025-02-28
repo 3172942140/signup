@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <title>赛事信息 - 郑州轻工业大学第二届Major</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4655;
+            --primary-dark: #cc3644;
+            --secondary: #0f1923;
+            --secondary-light: #1a2530;
+            --accent: #28b0e5;
+            --accent-dark: #1a8cb8;
+            --text: #ffffff;
+            --text-secondary: #b3b3b3;
+            --success: #52e3a0;
+            --warning: #ffce56;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary);
+            color: var(--text);
+            font-family: 'Noto Sans SC', 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat fixed;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .background-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(40, 176, 229, 0.05) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(40, 176, 229, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            z-index: 1;
+            margin-top: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            max-width: 120px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px rgba(40, 176, 229, 0.5));
+        }
+
+        .title {
+            font-size: 3rem;
+            margin: 1rem 0;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+        }
+
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        /* 导航索引样式 */
+        .nav-index {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(15, 25, 35, 0.8);
+            border: 2px solid var(--accent);
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .nav-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: var(--secondary-light);
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border-left: 3px solid var(--accent);
+        }
+
+        .nav-item:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(40, 176, 229, 0.3);
+        }
+
+        .nav-item i {
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .card {
+            background: rgba(15, 25, 35, 0.8);
+            border: 2px solid var(--accent);
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(40, 176, 229, 0.2);
+            text-align: left;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(40, 176, 229, 0.4);
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-title i {
+            font-size: 1.5rem;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .info-list li::before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .highlight {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .accent {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .warning {
+            color: var(--warning);
+            font-weight: bold;
+        }
+
+        .pixel-corners {
+            clip-path: polygon(
+                0 10px,
+                10px 0,
+                calc(100% - 10px) 0,
+                100% 10px,
+                100% calc(100% - 10px),
+                calc(100% - 10px) 100%,
+                10px 100%,
+                0 calc(100% - 10px)
+            );
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            margin-top: 2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(40, 176, 229, 0.3);
+        }
+
+        /* 页脚样式 */
+        .footer {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            width: 100%;
+            background: rgba(15, 25, 35, 0.8);
+            border-top: 2px solid var(--accent);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .official-link {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .official-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2rem;
+            }
+            .card-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-grid"></div>
+    
+    <div class="container">
+        <div class="header">
+            <img src="assets/logo.png" alt="Major赛事" class="logo">
+            <h1 class="title pixel-corners">赛事信息</h1>
+            <p class="subtitle">郑州轻工业大学第二届Major电竞赛事</p>
+        </div>
+        
+        <div class="nav-index pixel-corners">
+            <a href="#event-time" class="nav-item"><i class="fas fa-calendar-alt"></i> 赛事时间</a>
+            <a href="#requirements" class="nav-item"><i class="fas fa-users"></i> 参赛要求</a>
+            <a href="#registration" class="nav-item"><i class="fas fa-clipboard-list"></i> 报名流程</a>
+            <a href="#rules" class="nav-item"><i class="fas fa-trophy"></i> 赛事规则</a>
+            <a href="#communication" class="nav-item"><i class="fas fa-comments"></i> 赛事交流</a>
+            <a href="#rewards" class="nav-item"><i class="fas fa-gift"></i> 奖励设置</a>
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i> 返回首页</a>
+        </div>
+        
+        <div id="event-time" class="card pixel-corners">
+            <h2 class="card-title"><i class="fas fa-calendar-alt"></i> 赛事时间</h2>
+            <ul class="info-list">
+                <li><span class="highlight">报名开始时间：</span>2025年3月15日 00:00:00</li>
+                <li><span class="highlight">赛事开始时间：</span>2025年4月（具体日期待定）</li>
+                <li><span class="highlight">赛事持续时间：</span>预计2-3周（视参赛队伍数量而定）</li>
+            </ul>
+        </div>
+
+        <div id="requirements" class="card pixel-corners">
+            <h2 class="card-title"><i class="fas fa-users"></i> 参赛要求</h2>
+            <ul class="info-list">
+                <li><span class="highlight">队伍组成：</span>每支队伍<span class="accent">至少5名主力队员</span>，可选添加1名替补</li>
+                <li><span class="highlight">参赛资格：</span>仅限郑州轻工业大学在校学生（不包含毕业校友，他们可以参赛）</li>
+                <li><span class="highlight">禁止参赛：</span>赛事委员会成员不得参赛</li>
+                <li><span class="highlight">队伍数量：</span>参赛队伍数量不限</li>
+            </ul>
+        </div>
+
+        <div id="registration" class="card pixel-corners">
+            <h2 class="card-title"><i class="fas fa-clipboard-list"></i> 报名流程</h2>
+            <ul class="info-list">
+                <li><span class="highlight">报名网站：</span><a href="https://sign.zzulics.fun" class="official-link" target="_blank">https://sign.zzulics.fun</a>（备用网址：<a href="https://signup-a0l.pages.dev" class="official-link" target="_blank">https://signup-a0l.pages.dev</a>）</li>
+                <li><span class="highlight">必要信息：</span>
+                    <ul style="list-style: disc; margin-left: 1.5rem;">
+                        <li>队伍名称</li>
+                        <li>至少5名主力队员的姓名、学号、专业班级</li>
+                        <li>队长QQ号码（用于赛事通知）</li>
+                        <li>队长手机号码（需与微信绑定，用于邀请进入赛事微信队长群）</li>
+                    </ul>
+                </li>
+                <li><span class="highlight">报名确认：</span>提交报名信息后，赛事委员会将在24小时内审核，并通过QQ联系确认</li>
+            </ul>
+        </div>
+
+        <div id="rules" class="card pixel-corners">
+            <h2 class="card-title"><i class="fas fa-trophy"></i> 赛事规则</h2>
+            <ul class="info-list">
+                <li><span class="highlight">赛制：</span>
+                    <ul style="list-style: disc; margin-left: 1.5rem;">
+                        <li>小组赛：BO1（一局定胜负）</li>
+                        <li>半决赛：BO1（一局定胜负）</li>
+                        <li>决赛：BO3（三局两胜制）</li>
+                    </ul>
+                </li>
+                <li><span class="highlight">比赛方式：</span>暂定全部为线上赛（考虑决赛线下举行）</li>
+                <li><span class="highlight">赛程安排：</span>可在赛事官网查看：<a href="https://www.zzulics.fun" class="official-link" target="_blank">https://www.zzulics.fun</a>（备用网址：<a href="https://zzulics.pages.dev" class="official-link" target="_blank">https://zzulics.pages.dev</a>）</li>
+                <li><span class="warning">严禁使用外挂作弊</span>，一经发现，立即取消参赛资格</li>
+            </ul>
+        </div>
+
+        <div id="communication" class="card pixel-corners">
+            <h2 class="card-title"><i class="fas fa-comments"></i> 赛事交流</h2>
+            <ul class="info-list">
+                <li><span class="highlight">微信队长群：</span>报名成功后，赛事委员会将邀请各队队长加入微信群</li>
+                <li><span class="highlight">赛事QQ交流群：</span>报名开始后创建，无加入限制，所有对赛事感兴趣的同学均可加入</li>
+                <li><span class="highlight">赛事咨询：</span>如有任何问题，请联系赛事委员会邮箱：<a href="mailto:3172942140@QQ.com" class="official-link">3172942140@QQ.com</a></li>
+            </ul>
+        </div>
+
+        <div id="rewards" class="card pixel-corners">
+            <h2 class="card-title"><i class="fas fa-gift"></i> 奖励设置</h2>
+            <ul class="info-list">
+                <li><span class="highlight">冠军队伍：</span>奖杯一座、奖状</li>
+                <li><span class="highlight">亚军队伍：</span>奖状</li>
+            </ul>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>访问 <a href="https://zzulics.pages.dev/" target="_blank" class="official-link"><i class="fas fa-external-link-alt"></i> 郑州轻工业大学CS赛事官方网站</a></p>
+                <p class="copyright">© 2025 郑州轻工业大学第二届Major赛事组委会</p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
