@@ -288,196 +288,64 @@
     <div class="background-grid"></div>
     
     <div class="container">
-        <div class="header">
-            <h1 class="title pixel-corners">CS2 Major赛事报名表单</h1>
-        </div>
+        <header class="header">
+            <h1 class="title">Major赛事报名</h1>
+        </header>
         
-        <form class="form-container pixel-corners" id="registerForm">
+        <form id="registration-form" class="form-container pixel-corners">
+            <!-- 战队信息 -->
             <div class="form-section">
-                <h2 class="section-title">队伍信息</h2>
+                <h2 class="section-title">战队信息</h2>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="teamName">队伍名称</label>
-                        <input type="text" id="teamName" name="teamName" required>
+                        <label for="team_name">战队名称</label>
+                        <input type="text" id="team_name" name="team_name" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="teamEmail">QQ邮箱</label>
-                        <input type="email" id="teamEmail" name="teamEmail" required pattern="[\w.]+@qq\.com$" title="请输入有效的QQ邮箱地址">
+                        <label for="contact_qq">联系人QQ</label>
+                        <input type="text" id="contact_qq" name="contact_qq" required>
                     </div>
                     <div class="form-group">
-                        <label for="teamPhone">手机号码（需同微信）</label>
-                        <input type="tel" id="teamPhone" name="teamPhone" required pattern="^1[3-9]\d{9}$" title="请输入有效的11位手机号码">
+                        <label for="contact_email">联系人邮箱</label>
+                        <input type="email" id="contact_email" name="contact_email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact_phone">联系电话</label>
+                        <input type="tel" id="contact_phone" name="contact_phone" required>
                     </div>
                 </div>
             </div>
 
+            <!-- 队员信息 -->
             <div class="form-section">
-                <h2 class="section-title">队长信息（主力队员1）</h2>
-                <div class="player-card pixel-corners">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="captain_name">真实姓名</label>
-                            <input type="text" id="captain_name" name="players[0].name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="captain_studentId">学号</label>
-                            <input type="text" id="captain_studentId" name="players[0].studentId" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="captain_gameId">游戏ID</label>
-                            <input type="text" id="captain_gameId" name="players[0].gameId" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="captain_rank">游戏段位</label>
-                            <input type="text" id="captain_rank" name="players[0].rank" required>
-                        </div>
-                    </div>
+                <h2 class="section-title">队员信息（5-6名）</h2>
+                <div class="form-info" style="color: var(--text-secondary); margin-bottom: 1rem; text-align: left;">
+                    <p><i class="fas fa-info-circle"></i> 队伍组成要求：</p>
+                    <ul style="list-style: none; margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><i class="fas fa-check"></i> 基础阵容：1名队长 + 4名队员（必需）</li>
+                        <li><i class="fas fa-plus-circle"></i> 可选添加1名替补队员</li>
+                    </ul>
                 </div>
+                <div id="players-container">
+                    <!-- 队员卡片将通过JavaScript动态添加 -->
+                </div>
+                <button type="button" id="add-player-btn" class="submit-btn" style="background: var(--accent);">
+                    <i class="fas fa-plus"></i> 添加替补队员
+                </button>
             </div>
 
-            <div class="form-section">
-                <h2 class="section-title">主力队员（2-5号位）</h2>
-                <div id="mainPlayers">
-                    <!-- 主力队员2 -->
-                    <div class="player-card pixel-corners">
-                        <div class="player-title">2号位</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="player2_name">真实姓名</label>
-                                <input type="text" id="player2_name" name="players[1].name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="player2_studentId">学号</label>
-                                <input type="text" id="player2_studentId" name="players[1].studentId" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="player2_gameId">游戏ID</label>
-                                <input type="text" id="player2_gameId" name="players[1].gameId" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="player2_rank">游戏段位</label>
-                                <input type="text" id="player2_rank" name="players[1].rank" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 主力队员3 -->
-                    <div class="player-card pixel-corners">
-                        <div class="player-title">3号位</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="player3_name">真实姓名</label>
-                                <input type="text" id="player3_name" name="players[2].name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="player3_studentId">学号</label>
-                                <input type="text" id="player3_studentId" name="players[2].studentId" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="player3_gameId">游戏ID</label>
-                                <input type="text" id="player3_gameId" name="players[2].gameId" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="player3_rank">游戏段位</label>
-                                <input type="text" id="player3_rank" name="players[2].rank" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 主力队员4 -->
-                    <div class="player-card pixel-corners">
-                        <div class="player-title">4号位</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="player4_name">真实姓名</label>
-                                <input type="text" id="player4_name" name="players[3].name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="player4_studentId">学号</label>
-                                <input type="text" id="player4_studentId" name="players[3].studentId" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="player4_gameId">游戏ID</label>
-                                <input type="text" id="player4_gameId" name="players[3].gameId" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="player4_rank">游戏段位</label>
-                                <input type="text" id="player4_rank" name="players[3].rank" required>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 主力队员5 -->
-                    <div class="player-card pixel-corners">
-                        <div class="player-title">5号位</div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="player5_name">真实姓名</label>
-                                <input type="text" id="player5_name" name="players[4].name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="player5_studentId">学号</label>
-                                <input type="text" id="player5_studentId" name="players[4].studentId" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="player5_gameId">游戏ID</label>
-                                <input type="text" id="player5_gameId" name="players[4].gameId" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="player5_rank">游戏段位</label>
-                                <input type="text" id="player5_rank" name="players[4].rank" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <h2 class="section-title">替补队员（可选）</h2>
-                <div class="player-card pixel-corners">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="sub_name">真实姓名</label>
-                            <input type="text" id="sub_name" name="players[5].name">
-                        </div>
-                        <div class="form-group">
-                            <label for="sub_studentId">学号</label>
-                            <input type="text" id="sub_studentId" name="players[5].studentId">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="sub_gameId">游戏ID</label>
-                            <input type="text" id="sub_gameId" name="players[5].gameId">
-                        </div>
-                        <div class="form-group">
-                            <label for="sub_rank">游戏段位</label>
-                            <input type="text" id="sub_rank" name="players[5].rank">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+            <!-- 提交按钮 -->
             <button type="submit" class="submit-btn pixel-corners">
-                <i class="fas fa-paper-plane"></i> 提交报名
+                提交报名
             </button>
         </form>
 
-        <div class="success-message pixel-corners" id="successMessage">
-            <h3><i class="fas fa-check-circle"></i> 报名成功！</h3>
-            <p>您的队伍已成功报名CS2 Major赛事。我们将通过邮件通知您后续赛事安排。</p>
+        <!-- 成功消息 -->
+        <div class="success-message pixel-corners">
+            <h3>报名成功！</h3>
+            <p>我们将尽快处理您的报名信息。</p>
         </div>
     </div>
 
@@ -488,78 +356,8 @@
         </div>
     </footer>
 
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // 表单验证
-            const form = this;
-            const isValid = form.checkValidity();
-            
-            if (isValid) {
-                // 收集表单数据
-                const formData = {
-                    teamName: document.getElementById('teamName').value,
-                    teamEmail: document.getElementById('teamEmail').value,
-                    teamPhone: document.getElementById('teamPhone').value,
-                    players: [
-                        {
-                            name: document.getElementById('captain_name').value,
-                            studentId: document.getElementById('captain_studentId').value,
-                            gameId: document.getElementById('captain_gameId').value,
-                            rank: document.getElementById('captain_rank').value,
-                            isCaption: true
-                        },
-                        {
-                            name: document.getElementById('player2_name').value,
-                            studentId: document.getElementById('player2_studentId').value,
-                            gameId: document.getElementById('player2_gameId').value,
-                            rank: document.getElementById('player2_rank').value
-                        },
-                        {
-                            name: document.getElementById('player3_name').value,
-                            studentId: document.getElementById('player3_studentId').value,
-                            gameId: document.getElementById('player3_gameId').value,
-                            rank: document.getElementById('player3_rank').value
-                        },
-                        {
-                            name: document.getElementById('player4_name').value,
-                            studentId: document.getElementById('player4_studentId').value,
-                            gameId: document.getElementById('player4_gameId').value,
-                            rank: document.getElementById('player4_rank').value
-                        },
-                        {
-                            name: document.getElementById('player5_name').value,
-                            studentId: document.getElementById('player5_studentId').value,
-                            gameId: document.getElementById('player5_gameId').value,
-                            rank: document.getElementById('player5_rank').value
-                        }
-                    ]
-                };
-                
-                // 添加替补队员（如果有）
-                const subName = document.getElementById('sub_name').value;
-                if (subName) {
-                    formData.players.push({
-                        name: subName,
-                        studentId: document.getElementById('sub_studentId').value,
-                        gameId: document.getElementById('sub_gameId').value,
-                        rank: document.getElementById('sub_rank').value,
-                        isSubstitute: true
-                    });
-                }
-                
-                // 在实际应用中，这里应该发送数据到服务器
-                console.log('提交的数据:', formData);
-                
-                // 显示成功消息
-                document.getElementById('successMessage').style.display = 'block';
-                form.reset();
-                
-                // 滚动到成功消息
-                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-    </script>
+    <!-- 引入JavaScript文件 -->
+    <script src="js/api.js"></script>
+    <script src="js/register.js"></script>
 </body>
 </html>
