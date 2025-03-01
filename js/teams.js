@@ -308,10 +308,18 @@ async function loadTeamDetail() {
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', () => {
-    // 根据当前页面决定加载哪个功能
-    if (window.location.pathname.endsWith('teams.html')) {
+    // 获取当前路径
+    const path = window.location.pathname;
+    console.log('当前页面路径:', path);
+    
+    // 检查路径是否包含teams或team-detail（无论是否有.html后缀）
+    if (path.includes('teams') && !path.includes('team-detail')) {
+        console.log('加载战队列表页面');
         loadTeams();
-    } else if (window.location.pathname.endsWith('team-detail.html')) {
+    } else if (path.includes('team-detail')) {
+        console.log('加载战队详情页面');
         loadTeamDetail();
+    } else {
+        console.log('未知页面类型:', path);
     }
 });
