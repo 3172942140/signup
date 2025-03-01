@@ -253,6 +253,41 @@
         .special {
             border-left-color: var(--success);
         }
+        
+        .sponsor-item.has-image {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sponsor-item.has-image:hover {
+            background: rgba(26, 37, 48, 0.9);
+            transform: translateX(5px) translateY(-2px);
+            box-shadow: 0 5px 15px rgba(82, 227, 160, 0.2);
+        }
+        
+        .view-image {
+            color: var(--success);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+        
+        .sponsor-item.has-image:hover .view-image {
+            opacity: 1;
+            transform: translateX(3px);
+        }
+        
+        .sponsor-image {
+            max-width: 100%;
+            border: 4px solid var(--success);
+            box-shadow: 0 0 20px rgba(82, 227, 160, 0.4);
+            margin: 0 auto 1rem;
+        }
 
         .pixel-corners {
             clip-path: polygon(
@@ -632,10 +667,13 @@
                 
                 // 解析内容行
                 if (line.includes('|')) {
-                    const [name, description] = line.split('|').map(item => item.trim());
+                    const parts = line.split('|').map(item => item.trim());
+                    const name = parts[0];
+                    const description = parts[1];
+                    const imageName = parts[2] || null; // 获取图片名称，如果不存在则为null
                     
                     if (currentSection === 'special') {
-                        specialThanks.push({ name, description });
+                        specialThanks.push({ name, description, imageName });
                     } else if (currentSection === 'sponsors') {
                         sponsors.push({ name, description });
                     } else if (currentSection === 'fundingTotal') {
@@ -698,12 +736,24 @@
             specialList.innerHTML = '';
             
             specialThanks.forEach(person => {
+                const hasImage = person.imageName ? 'has-image' : '';
                 specialList.innerHTML += `
-                    <li class="sponsor-item special">
+                    <li class="sponsor-item special ${hasImage}" data-image="${person.imageName || ''}">
                         <div class="sponsor-name">${person.name}</div>
                         <div class="sponsor-description">${person.description}</div>
+                        ${person.imageName ? '<div class="view-image"><i class="fas fa-image"></i> 查看赞助截图</div>' : ''}
                     </li>
                 `;
+            });
+            
+            // 为有图片的赞助卡片添加点击事件
+            document.querySelectorAll('#special .sponsor-item.has-image').forEach(item => {
+                item.addEventListener('click', function() {
+                    const imageName = this.getAttribute('data-image');
+                    if (imageName) {
+                        showSponsorImage(this.querySelector('.sponsor-name').textContent, imageName);
+                    }
+                });
             });
             
             // 添加数字动画效果
@@ -712,6 +762,53 @@
                     counter.style.opacity = 1;
                 });
             }, 500);
+        }
+        
+        // 显示赞助截图的函数
+        function showSponsorImage(sponsorName, imageName) {
+            // 创建模态窗口
+            const imageModal = document.createElement('div');
+            imageModal.className = 'modal';
+            imageModal.innerHTML = `
+                <div class="modal-content pixel-corners">
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                    <h3 class="modal-title"><i class="fas fa-star"></i> ${sponsorName} 的赞助</h3>
+                    <div class="modal-body">
+                        <img src="assets/thanks/${imageName}" alt="${sponsorName}的赞助截图" class="sponsor-image pixel-corners">
+                        <p class="modal-text">感谢您对本次赛事的支持与赞助！</p>
+                    </div>
+                    <div class="modal-footer">
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                            <i class="fas fa-heart" style="color: var(--primary);"></i> 您的支持是我们前进的动力
+                        </p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(imageModal);
+            
+            // 显示模态窗口
+            setTimeout(() => {
+                imageModal.classList.add('show');
+            }, 10);
+            
+            // 关闭模态窗口
+            const closeBtn = imageModal.querySelector('.modal-close');
+            closeBtn.addEventListener('click', () => {
+                imageModal.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(imageModal);
+                }, 400); // 等待淡出动画完成后移除元素
+            });
+            
+            // 点击模态窗口外部关闭
+            imageModal.addEventListener('click', (e) => {
+                if (e.target === imageModal) {
+                    imageModal.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(imageModal);
+                    }, 400);
+                }
+            });
         }
         
         // 页面加载完成后执行
