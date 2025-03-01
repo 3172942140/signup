@@ -3,6 +3,9 @@ const API_BASE_URL = 'https://signapi.zzulics.fun/api';
 
 // API请求函数
 async function apiRequest(endpoint, method = 'GET', data = null) {
+    const url = `${API_BASE_URL}${endpoint}`;
+    console.log(`发起API请求: ${method} ${url}`);
+    
     const options = {
         method,
         headers: {
@@ -12,19 +15,27 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
 
     if (data) {
         options.body = JSON.stringify(data);
+        console.log('请求数据:', data);
     }
 
     try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+        console.log('开始发送请求...');
+        const response = await fetch(url, options);
+        console.log('收到响应:', response.status, response.statusText);
+        
         const result = await response.json();
+        console.log('响应数据:', result);
 
         if (!response.ok) {
-            throw new Error(result.error || '请求失败');
+            throw new Error(result.error || `HTTP错误: ${response.status} ${response.statusText}`);
         }
 
         return result;
     } catch (error) {
         console.error('API请求错误:', error);
+        if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+            throw new Error('无法连接到服务器，请检查网络连接或稍后重试');
+        }
         throw error;
     }
 }

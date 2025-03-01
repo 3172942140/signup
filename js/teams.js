@@ -216,13 +216,19 @@ async function loadTeams() {
     const teamsContent = document.getElementById('teams-content');
     
     try {
+        console.log('开始加载战队列表...');
         const teams = await getAllTeams();
+        console.log('获取到的战队数据:', teams);
         
         if (!teams || teams.length === 0) {
+            console.log('没有找到任何战队数据');
             teamsContent.innerHTML = `
                 <div class="no-teams pixel-corners">
                     <h3><i class="fas fa-info-circle"></i> 暂无战队</h3>
                     <p>还没有战队报名，快来成为第一个报名的战队吧！</p>
+                    <a href="register.html" class="nav-button pixel-corners" style="margin-top: 1rem; display: inline-block;">
+                        <i class="fas fa-user-plus"></i> 立即报名
+                    </a>
                 </div>
             `;
             return;
@@ -230,6 +236,7 @@ async function loadTeams() {
 
         // 根据队伍数量添加不同的布局类
         const layoutClass = teams.length <= 3 ? 'few-teams' : '';
+        console.log(`使用布局类: ${layoutClass}, 队伍数量: ${teams.length}`);
 
         teamsContent.innerHTML = `
             <div class="teams-container ${layoutClass}">
@@ -238,7 +245,14 @@ async function loadTeams() {
         `;
     } catch (error) {
         console.error('加载战队列表失败:', error);
-        teamsContent.innerHTML = showError('加载战队列表失败，请稍后重试');
+        // 显示更详细的错误信息
+        teamsContent.innerHTML = showError(`
+            加载战队列表失败，请稍后重试<br>
+            <small style="color: var(--text-secondary);">错误详情: ${error.message}</small><br>
+            <a href="javascript:location.reload()" class="nav-button pixel-corners" style="margin-top: 1rem; display: inline-block;">
+                <i class="fas fa-sync"></i> 重新加载
+            </a>
+        `);
     }
 }
 
