@@ -92,4 +92,19 @@ async function updateTeamStatus(teamId, status, reject_reason = '') {
 // 删除战队
 async function deleteTeam(teamId) {
     return apiRequest(`/teams/${teamId}`, 'DELETE');
+}
+
+// 生成修改链接
+async function generateEditLink(teamId) {
+    return apiRequest(`/teams/${teamId}/edit-token`, 'POST');
+}
+
+// 更新战队信息
+async function updateTeam(teamId, token, updateData) {
+    return apiRequest(`/teams/${teamId}?token=${token}`, 'PUT', updateData);
+}
+
+// 验证修改令牌
+async function verifyEditToken(teamId, token) {
+    return apiRequest(`/teams/${teamId}/verify-token?token=${token}`, 'GET');
 } 
