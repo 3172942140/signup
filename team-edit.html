@@ -300,6 +300,7 @@
         </header>
         
         <form id="edit-form" class="form-container pixel-corners">
+            <!-- 战队信息 -->
             <div class="form-section">
                 <h2 class="section-title">战队信息</h2>
                 <div class="form-row">
@@ -324,6 +325,25 @@
                 </div>
             </div>
 
+            <!-- 队员信息 -->
+            <div class="form-section">
+                <h2 class="section-title">队员信息（5-6名）</h2>
+                <div class="form-info" style="color: var(--text-secondary); margin-bottom: 1rem; text-align: left;">
+                    <p><i class="fas fa-info-circle"></i> 队伍组成要求：</p>
+                    <ul style="list-style: none; margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li><i class="fas fa-check"></i> 基础阵容：1名队长 + 4名队员（必需）</li>
+                        <li><i class="fas fa-plus-circle"></i> 可选添加1名替补队员</li>
+                    </ul>
+                </div>
+                <div id="players-container">
+                    <!-- 队员卡片将通过JavaScript动态添加 -->
+                </div>
+                <button type="button" id="add-player-btn" class="submit-btn" style="background: var(--accent);">
+                    <i class="fas fa-plus"></i> 添加替补队员
+                </button>
+            </div>
+
+            <!-- 提交按钮 -->
             <button type="submit" class="submit-btn pixel-corners">
                 保存修改
             </button>

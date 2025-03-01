@@ -96,15 +96,39 @@ async function deleteTeam(teamId) {
 
 // 生成修改链接
 async function generateEditLink(teamId) {
-    return apiRequest(`/teams/${teamId}/edit-token`, 'POST');
+    try {
+        const response = await apiRequest(`/teams/${teamId}/edit-token`, 'POST');
+        if (response.success && response.token) {
+            // 返回完整的响应，包含token和editUrl
+            return response;
+        }
+        throw new Error(response.error || '生成修改链接失败');
+    } catch (error) {
+        console.error('生成修改链接失败:', error);
+        throw error;
+    }
 }
 
 // 更新战队信息
 async function updateTeam(teamId, token, updateData) {
-    return apiRequest(`/teams/${teamId}?token=${token}`, 'PUT', updateData);
+    try {
+        // 确保token已经正确编码
+        const encodedToken = encodeURIComponent(token);
+        return await apiRequest(`/teams/${teamId}?token=${encodedToken}`, 'PUT', updateData);
+    } catch (error) {
+        console.error('更新战队信息失败:', error);
+        throw error;
+    }
 }
 
 // 验证修改令牌
 async function verifyEditToken(teamId, token) {
-    return apiRequest(`/teams/${teamId}/verify-token?token=${token}`, 'GET');
+    try {
+        // 确保token已经正确编码
+        const encodedToken = encodeURIComponent(token);
+        return await apiRequest(`/teams/${teamId}/verify-token?token=${encodedToken}`, 'GET');
+    } catch (error) {
+        console.error('验证修改令牌失败:', error);
+        throw error;
+    }
 } 
