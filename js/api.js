@@ -42,4 +42,9 @@ async function getAllTeams() {
 // 更新战队状态
 async function updateTeamStatus(teamId, status, reject_reason = '') {
     return apiRequest(`/teams/${teamId}/status`, 'PUT', { status, reject_reason });
+}
+
+// 删除战队
+async function deleteTeam(teamId) {
+    return apiRequest(`/teams/${teamId}`, 'DELETE');
 } 
