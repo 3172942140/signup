@@ -213,69 +213,32 @@ function showError(message) {
 
 // 加载战队列表
 async function loadTeams() {
-    console.log('=== 开始加载战队列表 ===');
     const teamsContent = document.getElementById('teams-content');
-    console.log('获取到teams-content元素:', teamsContent);
     
     try {
-        console.log('准备调用 getAllTeams API...');
         const teams = await getAllTeams();
-        console.log('API返回的原始数据:', teams);
         
-        if (!teams || !Array.isArray(teams)) {
-            console.error('API返回的数据格式不正确:', teams);
-            teamsContent.innerHTML = showError(`
-                数据格式不正确。<br>
-                <small style="color: var(--text-secondary);">返回数据类型: ${typeof teams}</small><br>
-                <small style="color: var(--text-secondary);">数据内容: ${JSON.stringify(teams)}</small>
-            `);
-            return;
-        }
-
-        if (teams.length === 0) {
-            console.log('没有找到任何战队数据');
+        if (!teams || teams.length === 0) {
             teamsContent.innerHTML = `
                 <div class="no-teams pixel-corners">
                     <h3><i class="fas fa-info-circle"></i> 暂无战队</h3>
                     <p>还没有战队报名，快来成为第一个报名的战队吧！</p>
-                    <a href="register.html" class="nav-button pixel-corners" style="margin-top: 1rem; display: inline-block;">
-                        <i class="fas fa-user-plus"></i> 立即报名
-                    </a>
                 </div>
             `;
             return;
         }
 
-        console.log(`准备渲染 ${teams.length} 个战队卡片`);
         // 根据队伍数量添加不同的布局类
         const layoutClass = teams.length <= 3 ? 'few-teams' : '';
-        console.log(`使用布局类: ${layoutClass}`);
 
-        const cardsHtml = teams.map((team, index) => {
-            console.log(`正在处理第 ${index + 1} 个战队:`, team);
-            return createTeamCard(team);
-        }).join('');
-
-        console.log('生成的HTML长度:', cardsHtml.length);
         teamsContent.innerHTML = `
             <div class="teams-container ${layoutClass}">
-                ${cardsHtml}
+                ${teams.map(team => createTeamCard(team)).join('')}
             </div>
         `;
-        console.log('HTML已更新到页面');
-
     } catch (error) {
         console.error('加载战队列表失败:', error);
-        console.error('错误堆栈:', error.stack);
-        // 显示更详细的错误信息
-        teamsContent.innerHTML = showError(`
-            加载战队列表失败，请稍后重试<br>
-            <small style="color: var(--text-secondary);">错误详情: ${error.message}</small><br>
-            <small style="color: var(--text-secondary);">错误类型: ${error.name}</small><br>
-            <a href="javascript:location.reload()" class="nav-button pixel-corners" style="margin-top: 1rem; display: inline-block;">
-                <i class="fas fa-sync"></i> 重新加载
-            </a>
-        `);
+        teamsContent.innerHTML = showError('加载战队列表失败，请稍后重试');
     }
 }
 
@@ -308,18 +271,10 @@ async function loadTeamDetail() {
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', () => {
-    // 获取当前路径
-    const path = window.location.pathname;
-    console.log('当前页面路径:', path);
-    
-    // 检查路径是否包含teams或team-detail（无论是否有.html后缀）
-    if (path.includes('teams') && !path.includes('team-detail')) {
-        console.log('加载战队列表页面');
+    // 根据当前页面决定加载哪个功能
+    if (window.location.pathname.endsWith('teams.html')) {
         loadTeams();
-    } else if (path.includes('team-detail')) {
-        console.log('加载战队详情页面');
+    } else if (window.location.pathname.endsWith('team-detail.html')) {
         loadTeamDetail();
-    } else {
-        console.log('未知页面类型:', path);
     }
 });
