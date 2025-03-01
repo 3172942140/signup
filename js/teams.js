@@ -216,9 +216,7 @@ async function loadTeams() {
     const teamsContent = document.getElementById('teams-content');
     
     try {
-        console.log('开始加载战队列表...');
         const teams = await getAllTeams();
-        console.log('获取到战队数据:', teams);
         
         if (!teams || teams.length === 0) {
             teamsContent.innerHTML = `
@@ -240,7 +238,7 @@ async function loadTeams() {
         `;
     } catch (error) {
         console.error('加载战队列表失败:', error);
-        teamsContent.innerHTML = showError(`加载战队列表失败: ${error.message}`);
+        teamsContent.innerHTML = showError('加载战队列表失败，请稍后重试');
     }
 }
 
@@ -256,9 +254,7 @@ async function loadTeamDetail() {
     }
 
     try {
-        console.log('开始加载战队详情，ID:', teamId);
         const teams = await getAllTeams();
-        console.log('获取到所有战队数据:', teams);
         const team = teams.find(t => t.id === parseInt(teamId));
         
         if (!team) {
@@ -269,46 +265,16 @@ async function loadTeamDetail() {
         teamContent.innerHTML = createTeamDetail(team);
     } catch (error) {
         console.error('加载战队详情失败:', error);
-        teamContent.innerHTML = showError(`加载战队详情失败: ${error.message}`);
-    }
-}
-
-// 检测当前页面
-function detectCurrentPage() {
-    const path = window.location.pathname;
-    console.log('当前页面路径:', path);
-    
-    // 检查URL中是否包含特定页面名称
-    if (path.includes('teams.html')) {
-        console.log('检测到teams.html页面，加载战队列表');
-        loadTeams();
-    } else if (path.includes('team-detail.html')) {
-        console.log('检测到team-detail.html页面，加载战队详情');
-        loadTeamDetail();
-    } else {
-        // 尝试通过页面标题或其他元素判断
-        const title = document.title;
-        console.log('页面标题:', title);
-        
-        if (title.includes('参赛队伍')) {
-            console.log('通过标题检测到队伍列表页面，加载战队列表');
-            loadTeams();
-        } else if (title.includes('队伍详情')) {
-            console.log('通过标题检测到队伍详情页面，加载战队详情');
-            loadTeamDetail();
-        } else if (document.getElementById('teams-content')) {
-            console.log('检测到teams-content元素，加载战队列表');
-            loadTeams();
-        } else if (document.getElementById('team-content')) {
-            console.log('检测到team-content元素，加载战队详情');
-            loadTeamDetail();
-        }
+        teamContent.innerHTML = showError('加载战队详情失败，请稍后重试');
     }
 }
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('页面加载完成，开始初始化...');
-    // 使用更健壮的页面检测方法
-    detectCurrentPage();
+    // 根据当前页面决定加载哪个功能
+    if (window.location.pathname.endsWith('teams.html')) {
+        loadTeams();
+    } else if (window.location.pathname.endsWith('team-detail.html')) {
+        loadTeamDetail();
+    }
 });
