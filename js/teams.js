@@ -250,7 +250,7 @@ async function loadTeams() {
                 <div class="no-teams pixel-corners">
                     <h3><i class="fas fa-info-circle"></i> 暂无战队</h3>
                     <p>还没有战队报名，快来成为第一个报名的战队吧！</p>
-                    <a href="register.html" class="nav-button pixel-corners" style="margin-top: 1rem; display: inline-block;">
+                    <a href="index.html" class="nav-button pixel-corners" style="margin-top: 1rem; display: inline-block;">
                         <i class="fas fa-user-plus"></i> 立即报名
                     </a>
                 </div>
@@ -330,11 +330,14 @@ async function loadTeamDetail() {
     }
 }
 
-// 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', () => {
+// 立即执行的初始化函数
+(function initializePage() {
+    // 标记这是生产环境代码，不应被优化掉
+    const PRODUCTION = true;
+    
     // 获取当前路径
     const path = window.location.pathname;
-    console.log('当前页面路径:', path);
+    console.log('[PRODUCTION] 当前页面路径:', path);
     
     // 检查是否在teams页面
     const isTeamsPage = path === '/teams' || 
@@ -352,50 +355,71 @@ document.addEventListener('DOMContentLoaded', () => {
                         path.endsWith('/team-detail/') ||
                         path.endsWith('/team-detail.html');
     
-    console.log('页面类型:', {
-        isTeamsPage,
-        isDetailPage,
-        path
-    });
+    // 强制执行的函数
+    function forceExecute(fn) {
+        // 添加一个随机参数以防止缓存
+        const timestamp = Date.now();
+        if (PRODUCTION) {
+            console.log(`[PRODUCTION] 强制执行函数 (${timestamp})`);
+            return fn();
+        }
+        return fn();
+    }
     
-    // 根据页面类型加载相应内容
-    if (isTeamsPage) {
-        console.log('加载战队列表页面');
-        loadTeams().catch(error => {
-            console.error('页面加载失败:', error);
-            const teamsContent = document.getElementById('teams-content');
-            if (teamsContent) {
-                teamsContent.innerHTML = showError(`
-                    加载失败，请刷新重试<br>
-                    <small style="color: var(--text-secondary);">错误信息: ${error.message}</small>
-                `);
-            }
+    // 初始化页面
+    function initPage() {
+        console.log('[PRODUCTION] 页面类型:', {
+            isTeamsPage,
+            isDetailPage,
+            path
         });
-    } else if (isDetailPage) {
-        console.log('加载战队详情页面');
-        loadTeamDetail().catch(error => {
-            console.error('页面加载失败:', error);
-            const teamContent = document.getElementById('team-content');
-            if (teamContent) {
-                teamContent.innerHTML = showError(`
-                    加载失败，请刷新重试<br>
-                    <small style="color: var(--text-secondary);">错误信息: ${error.message}</small>
-                `);
+        
+        // 根据页面类型加载相应内容
+        if (isTeamsPage) {
+            console.log('[PRODUCTION] 加载战队列表页面');
+            forceExecute(() => loadTeams().catch(error => {
+                console.error('[PRODUCTION] 页面加载失败:', error);
+                const teamsContent = document.getElementById('teams-content');
+                if (teamsContent) {
+                    teamsContent.innerHTML = showError(`
+                        加载失败，请刷新重试<br>
+                        <small style="color: var(--text-secondary);">错误信息: ${error.message}</small>
+                    `);
+                }
+            }));
+        } else if (isDetailPage) {
+            console.log('[PRODUCTION] 加载战队详情页面');
+            forceExecute(() => loadTeamDetail().catch(error => {
+                console.error('[PRODUCTION] 页面加载失败:', error);
+                const teamContent = document.getElementById('team-content');
+                if (teamContent) {
+                    teamContent.innerHTML = showError(`
+                        加载失败，请刷新重试<br>
+                        <small style="color: var(--text-secondary);">错误信息: ${error.message}</small>
+                    `);
+                }
+            }));
+        } else {
+            console.log('[PRODUCTION] 未知页面类型:', path);
+            // 如果在页面上找到相关容器，也尝试加载内容
+            if (document.getElementById('teams-content')) {
+                console.log('[PRODUCTION] 找到teams-content元素，尝试加载战队列表');
+                forceExecute(() => loadTeams().catch(error => {
+                    console.error('[PRODUCTION] 页面加载失败:', error);
+                }));
+            } else if (document.getElementById('team-content')) {
+                console.log('[PRODUCTION] 找到team-content元素，尝试加载战队详情');
+                forceExecute(() => loadTeamDetail().catch(error => {
+                    console.error('[PRODUCTION] 页面加载失败:', error);
+                }));
             }
-        });
-    } else {
-        console.log('未知页面类型:', path);
-        // 如果在页面上找到相关容器，也尝试加载内容
-        if (document.getElementById('teams-content')) {
-            console.log('找到teams-content元素，尝试加载战队列表');
-            loadTeams().catch(error => {
-                console.error('页面加载失败:', error);
-            });
-        } else if (document.getElementById('team-content')) {
-            console.log('找到team-content元素，尝试加载战队详情');
-            loadTeamDetail().catch(error => {
-                console.error('页面加载失败:', error);
-            });
         }
     }
-});
+
+    // 确保 DOM 加载完成后执行
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => forceExecute(initPage));
+    } else {
+        forceExecute(initPage);
+    }
+})();
