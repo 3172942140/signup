@@ -213,33 +213,94 @@ function showError(message) {
 
 // 加载战队列表
 async function loadTeams() {
+    console.log('=== 开始加载战队列表 ===');
     const teamsContent = document.getElementById('teams-content');
+    console.log('获取到teams-content元素:', teamsContent);
+    
+    // 显示加载状态
+    teamsContent.innerHTML = `
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            <p>正在加载队伍信息...</p>
+            <small style="color: var(--text-secondary);">首次加载可能需要几秒钟</small>
+        </div>
+    `;
     
     try {
+        console.log('准备调用 getAllTeams API...');
         const teams = await getAllTeams();
+        console.log('API返回的原始数据:', teams);
         
-        if (!teams || teams.length === 0) {
+        if (!teams || !Array.isArray(teams)) {
+            console.error('API返回的数据格式不正确:', teams);
+            teamsContent.innerHTML = showError(`
+                数据格式不正确。<br>
+                <small style="color: var(--text-secondary);">返回数据类型: ${typeof teams}</small><br>
+                <small style="color: var(--text-secondary);">数据内容: ${JSON.stringify(teams)}</small><br>
+                <a href="javascript:retryLoad()" class="nav-button pixel-corners" style="margin-top: 1rem; display: inline-block;">
+                    <i class="fas fa-sync"></i> 重新加载
+                </a>
+            `);
+            return;
+        }
+
+        if (teams.length === 0) {
+            console.log('没有找到任何战队数据');
             teamsContent.innerHTML = `
                 <div class="no-teams pixel-corners">
                     <h3><i class="fas fa-info-circle"></i> 暂无战队</h3>
                     <p>还没有战队报名，快来成为第一个报名的战队吧！</p>
+                    <a href="register.html" class="nav-button pixel-corners" style="margin-top: 1rem; display: inline-block;">
+                        <i class="fas fa-user-plus"></i> 立即报名
+                    </a>
                 </div>
             `;
             return;
         }
 
+        console.log(`准备渲染 ${teams.length} 个战队卡片`);
         // 根据队伍数量添加不同的布局类
         const layoutClass = teams.length <= 3 ? 'few-teams' : '';
+        console.log(`使用布局类: ${layoutClass}`);
 
+        const cardsHtml = teams.map((team, index) => {
+            console.log(`正在处理第 ${index + 1} 个战队:`, team);
+            return createTeamCard(team);
+        }).join('');
+
+        console.log('生成的HTML长度:', cardsHtml.length);
         teamsContent.innerHTML = `
             <div class="teams-container ${layoutClass}">
-                ${teams.map(team => createTeamCard(team)).join('')}
+                ${cardsHtml}
             </div>
         `;
+        console.log('HTML已更新到页面');
+
     } catch (error) {
         console.error('加载战队列表失败:', error);
-        teamsContent.innerHTML = showError('加载战队列表失败，请稍后重试');
+        console.error('错误堆栈:', error.stack);
+        // 显示更详细的错误信息
+        teamsContent.innerHTML = showError(`
+            加载战队列表失败，请稍后重试<br>
+            <small style="color: var(--text-secondary);">错误详情: ${error.message}</small><br>
+            <small style="color: var(--text-secondary);">错误类型: ${error.name}</small><br>
+            <a href="javascript:retryLoad()" class="nav-button pixel-corners" style="margin-top: 1rem; display: inline-block;">
+                <i class="fas fa-sync"></i> 重新加载
+            </a>
+        `);
     }
+}
+
+// 重试加载函数
+async function retryLoad() {
+    const teamsContent = document.getElementById('teams-content');
+    teamsContent.innerHTML = `
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            <p>正在重新加载...</p>
+        </div>
+    `;
+    await loadTeams();
 }
 
 // 加载战队详情
@@ -271,10 +332,70 @@ async function loadTeamDetail() {
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', () => {
-    // 根据当前页面决定加载哪个功能
-    if (window.location.pathname.endsWith('teams.html')) {
-        loadTeams();
-    } else if (window.location.pathname.endsWith('team-detail.html')) {
-        loadTeamDetail();
+    // 获取当前路径
+    const path = window.location.pathname;
+    console.log('当前页面路径:', path);
+    
+    // 检查是否在teams页面
+    const isTeamsPage = path === '/teams' || 
+                       path === '/teams/' || 
+                       path === '/teams.html' || 
+                       path.endsWith('/teams') || 
+                       path.endsWith('/teams/') ||
+                       path.endsWith('/teams.html');
+                       
+    // 检查是否在team-detail页面
+    const isDetailPage = path === '/team-detail' || 
+                        path === '/team-detail/' || 
+                        path === '/team-detail.html' || 
+                        path.endsWith('/team-detail') || 
+                        path.endsWith('/team-detail/') ||
+                        path.endsWith('/team-detail.html');
+    
+    console.log('页面类型:', {
+        isTeamsPage,
+        isDetailPage,
+        path
+    });
+    
+    // 根据页面类型加载相应内容
+    if (isTeamsPage) {
+        console.log('加载战队列表页面');
+        loadTeams().catch(error => {
+            console.error('页面加载失败:', error);
+            const teamsContent = document.getElementById('teams-content');
+            if (teamsContent) {
+                teamsContent.innerHTML = showError(`
+                    加载失败，请刷新重试<br>
+                    <small style="color: var(--text-secondary);">错误信息: ${error.message}</small>
+                `);
+            }
+        });
+    } else if (isDetailPage) {
+        console.log('加载战队详情页面');
+        loadTeamDetail().catch(error => {
+            console.error('页面加载失败:', error);
+            const teamContent = document.getElementById('team-content');
+            if (teamContent) {
+                teamContent.innerHTML = showError(`
+                    加载失败，请刷新重试<br>
+                    <small style="color: var(--text-secondary);">错误信息: ${error.message}</small>
+                `);
+            }
+        });
+    } else {
+        console.log('未知页面类型:', path);
+        // 如果在页面上找到相关容器，也尝试加载内容
+        if (document.getElementById('teams-content')) {
+            console.log('找到teams-content元素，尝试加载战队列表');
+            loadTeams().catch(error => {
+                console.error('页面加载失败:', error);
+            });
+        } else if (document.getElementById('team-content')) {
+            console.log('找到team-content元素，尝试加载战队详情');
+            loadTeamDetail().catch(error => {
+                console.error('页面加载失败:', error);
+            });
+        }
     }
 });
