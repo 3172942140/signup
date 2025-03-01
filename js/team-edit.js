@@ -359,6 +359,15 @@ async function handleSubmit(event) {
         // 使用updateTeam函数发送更新请求
         const result = await updateTeam(teamId, token, formData);
 
+        // 获取当前战队信息
+        const teams = await getAllTeams();
+        const team = teams.find(t => t.id === teamId);
+        
+        // 如果战队状态是已拒绝，则自动改为待审核
+        if (team && team.status === 'rejected') {
+            await updateTeamStatus(teamId, 'pending');
+        }
+
         showSuccess('战队信息已成功更新');
         
         // 3秒后返回战队列表页面
