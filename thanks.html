@@ -394,12 +394,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.85);
             z-index: 1000;
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            backdrop-filter: blur(5px);
         }
         
         .modal.show {
@@ -408,21 +409,24 @@
         }
         
         .modal-content {
-            background: rgba(15, 25, 35, 0.95);
-            border: 2px solid var(--accent);
-            max-width: 400px;
+            background: linear-gradient(135deg, rgba(15, 25, 35, 0.95) 0%, rgba(26, 37, 48, 0.98) 100%);
+            border: 3px solid;
+            border-image: linear-gradient(45deg, var(--accent), var(--primary)) 1;
+            max-width: 420px;
             width: 90%;
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             position: relative;
             text-align: center;
             transform: translateY(-20px);
-            transition: transform 0.3s ease;
-            animation: modalAppear 0.3s forwards;
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+            animation: modalAppear 0.5s forwards;
+            box-shadow: 0 0 30px rgba(40, 176, 229, 0.3), inset 0 0 15px rgba(15, 25, 35, 0.5);
         }
         
         @keyframes modalAppear {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            0% { transform: translateY(-30px); opacity: 0; }
+            70% { transform: translateY(5px); opacity: 0.9; }
+            100% { transform: translateY(0); opacity: 1; }
         }
         
         .modal.show .modal-content {
@@ -430,45 +434,102 @@
         }
         
         .modal-title {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: var(--accent);
-            margin-bottom: 1rem;
-            border-bottom: 2px solid var(--accent);
-            padding-bottom: 0.5rem;
+            margin-bottom: 1.2rem;
+            border-bottom: 2px solid;
+            border-image: linear-gradient(90deg, transparent, var(--accent), transparent) 1;
+            padding-bottom: 0.8rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(40, 176, 229, 0.5);
         }
         
         .modal-body {
-            margin: 1.5rem 0;
+            margin: 1.8rem 0;
+            position: relative;
+        }
+        
+        .modal-body::before, .modal-body::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--warning);
+            z-index: 1;
+        }
+        
+        .modal-body::before {
+            top: -5px;
+            left: -5px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .modal-body::after {
+            bottom: -5px;
+            right: -5px;
+            border-left: none;
+            border-top: none;
         }
         
         .qr-code {
             max-width: 200px;
-            margin: 0 auto 1rem;
-            border: 3px solid var(--warning);
-            padding: 5px;
+            margin: 0 auto 1.5rem;
+            border: 4px solid var(--warning);
+            padding: 8px;
             background: white;
+            box-shadow: 0 0 20px rgba(255, 206, 86, 0.4);
+            transform: rotate(-1deg);
+            transition: all 0.3s ease;
+            animation: qrFloat 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes qrFloat {
+            0% { transform: rotate(-1deg) translateY(0); }
+            100% { transform: rotate(1deg) translateY(-5px); }
+        }
+        
+        .qr-code:hover {
+            transform: rotate(1deg) scale(1.02);
+            box-shadow: 0 0 25px rgba(255, 206, 86, 0.6);
         }
         
         .modal-text {
             color: var(--text);
-            margin-bottom: 1rem;
-            line-height: 1.5;
+            margin: 1.2rem 0;
+            line-height: 1.6;
+            font-size: 1.05rem;
+            padding: 0 0.5rem;
+            position: relative;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .modal-close {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
+            top: 12px;
+            right: 12px;
+            background: rgba(15, 25, 35, 0.7);
+            border: 2px solid var(--accent);
             color: var(--text-secondary);
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px rgba(40, 176, 229, 0.3);
         }
         
         .modal-close:hover {
             color: var(--primary);
+            transform: rotate(90deg);
+            box-shadow: 0 0 15px rgba(255, 70, 85, 0.5);
+            border-color: var(--primary);
         }
     </style>
 </head>
@@ -668,6 +729,11 @@
                     <div class="modal-body">
                         <img src="assets/MM.jpg" alt="微信二维码" class="qr-code pixel-corners">
                         <p class="modal-text">如想要赞助，请添加赛事委员会成员毛毛微信，我们将不胜感激！</p>
+                    </div>
+                    <div class="modal-footer">
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">
+                            <i class="fas fa-info-circle"></i> 您的每一份支持都将用于赛事的举办与发展
+                        </p>
                     </div>
                 </div>
             `;
