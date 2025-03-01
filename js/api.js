@@ -4,27 +4,40 @@ const API_BASE_URL = 'https://signapi.zzulics.fun/api';
 // API请求函数
 async function apiRequest(endpoint, method = 'GET', data = null) {
     const url = `${API_BASE_URL}${endpoint}`;
-    console.log(`发起API请求: ${method} ${url}`);
+    console.log(`[API] 发起请求: ${method} ${url}`);
     
     const options = {
         method,
         headers: {
             'Content-Type': 'application/json',
         },
+        mode: 'cors'  // 明确指定CORS模式
     };
 
     if (data) {
         options.body = JSON.stringify(data);
-        console.log('请求数据:', data);
+        console.log('[API] 请求数据:', data);
     }
 
     try {
-        console.log('开始发送请求...');
+        console.log('[API] 开始fetch请求...');
         const response = await fetch(url, options);
-        console.log('收到响应:', response.status, response.statusText);
+        console.log('[API] 收到响应:', {
+            status: response.status,
+            statusText: response.statusText,
+            headers: Object.fromEntries(response.headers.entries())
+        });
         
+        // 检查响应类型
+        const contentType = response.headers.get('content-type');
+        console.log('[API] 响应Content-Type:', contentType);
+
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error(`非JSON响应: ${contentType}`);
+        }
+
         const result = await response.json();
-        console.log('响应数据:', result);
+        console.log('[API] 解析的响应数据:', result);
 
         if (!response.ok) {
             throw new Error(result.error || `HTTP错误: ${response.status} ${response.statusText}`);
@@ -32,9 +45,14 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
 
         return result;
     } catch (error) {
-        console.error('API请求错误:', error);
-        if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
-            throw new Error('无法连接到服务器，请检查网络连接或稍后重试');
+        console.error('[API] 请求错误:', error);
+        console.error('[API] 错误堆栈:', error.stack);
+        
+        if (error instanceof TypeError) {
+            if (error.message.includes('Failed to fetch')) {
+                throw new Error(`无法连接到服务器 (${API_BASE_URL})，请检查网络连接或稍后重试`);
+            }
+            throw new Error(`网络错误: ${error.message}`);
         }
         throw error;
     }

@@ -213,14 +213,26 @@ function showError(message) {
 
 // 加载战队列表
 async function loadTeams() {
+    console.log('=== 开始加载战队列表 ===');
     const teamsContent = document.getElementById('teams-content');
+    console.log('获取到teams-content元素:', teamsContent);
     
     try {
-        console.log('开始加载战队列表...');
+        console.log('准备调用 getAllTeams API...');
         const teams = await getAllTeams();
-        console.log('获取到的战队数据:', teams);
+        console.log('API返回的原始数据:', teams);
         
-        if (!teams || teams.length === 0) {
+        if (!teams || !Array.isArray(teams)) {
+            console.error('API返回的数据格式不正确:', teams);
+            teamsContent.innerHTML = showError(`
+                数据格式不正确。<br>
+                <small style="color: var(--text-secondary);">返回数据类型: ${typeof teams}</small><br>
+                <small style="color: var(--text-secondary);">数据内容: ${JSON.stringify(teams)}</small>
+            `);
+            return;
+        }
+
+        if (teams.length === 0) {
             console.log('没有找到任何战队数据');
             teamsContent.innerHTML = `
                 <div class="no-teams pixel-corners">
@@ -234,21 +246,32 @@ async function loadTeams() {
             return;
         }
 
+        console.log(`准备渲染 ${teams.length} 个战队卡片`);
         // 根据队伍数量添加不同的布局类
         const layoutClass = teams.length <= 3 ? 'few-teams' : '';
-        console.log(`使用布局类: ${layoutClass}, 队伍数量: ${teams.length}`);
+        console.log(`使用布局类: ${layoutClass}`);
 
+        const cardsHtml = teams.map((team, index) => {
+            console.log(`正在处理第 ${index + 1} 个战队:`, team);
+            return createTeamCard(team);
+        }).join('');
+
+        console.log('生成的HTML长度:', cardsHtml.length);
         teamsContent.innerHTML = `
             <div class="teams-container ${layoutClass}">
-                ${teams.map(team => createTeamCard(team)).join('')}
+                ${cardsHtml}
             </div>
         `;
+        console.log('HTML已更新到页面');
+
     } catch (error) {
         console.error('加载战队列表失败:', error);
+        console.error('错误堆栈:', error.stack);
         // 显示更详细的错误信息
         teamsContent.innerHTML = showError(`
             加载战队列表失败，请稍后重试<br>
             <small style="color: var(--text-secondary);">错误详情: ${error.message}</small><br>
+            <small style="color: var(--text-secondary);">错误类型: ${error.name}</small><br>
             <a href="javascript:location.reload()" class="nav-button pixel-corners" style="margin-top: 1rem; display: inline-block;">
                 <i class="fas fa-sync"></i> 重新加载
             </a>
