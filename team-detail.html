@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <title>队伍详情 - 郑州轻工业大学第二届Major</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4655;
+            --primary-dark: #cc3644;
+            --secondary: #0f1923;
+            --secondary-light: #1a2530;
+            --accent: #28b0e5;
+            --accent-dark: #1a8cb8;
+            --text: #ffffff;
+            --text-secondary: #b3b3b3;
+            --success: #52e3a0;
+            --warning: #ffce56;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary);
+            color: var(--text);
+            font-family: 'Noto Sans SC', 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover no-repeat fixed;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .background-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(40, 176, 229, 0.05) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(40, 176, 229, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            z-index: 1;
+            margin-top: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .logo {
+            max-width: 120px;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px rgba(40, 176, 229, 0.5));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .title {
+            font-size: 3rem;
+            margin: 1rem 0;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8);
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            transform: skew(-5deg);
+        }
+
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 4px;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+            animation: fadeInUp 1.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .team-detail-container {
+            background: rgba(15, 25, 35, 0.8);
+            border: 2px solid var(--accent);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .team-detail-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--accent), var(--primary), var(--accent));
+            z-index: -1;
+            filter: blur(10px);
+            opacity: 0.3;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary-light);
+            color: var(--text);
+            border: 2px solid var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 1;
+        }
+
+        .back-button:hover {
+            background: var(--accent-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(40, 176, 229, 0.3);
+        }
+
+        .back-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(40, 176, 229, 0.3);
+        }
+
+        .team-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(40, 176, 229, 0.3);
+        }
+
+        .team-name-large {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .team-status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .status-pending {
+            background-color: rgba(255, 206, 86, 0.2);
+            color: var(--warning);
+            border-left: 3px solid var(--warning);
+        }
+
+        .status-approved {
+            background-color: rgba(82, 227, 160, 0.2);
+            color: var(--success);
+            border-left: 3px solid var(--success);
+        }
+
+        .status-rejected {
+            background-color: rgba(255, 70, 85, 0.2);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+        }
+
+        .team-info-section {
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(40, 176, 229, 0.3);
+            padding-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(40, 176, 229, 0.1);
+            border-radius: 4px;
+        }
+
+        .contact-item i {
+            color: var(--accent);
+            width: 20px;
+            text-align: center;
+        }
+
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .player-card {
+            background: rgba(26, 37, 48, 0.6);
+            border: 1px solid var(--accent);
+            padding: 1.5rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .player-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(40, 176, 229, 0.2);
+        }
+
+        .player-role {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-leader {
+            background-color: rgba(255, 70, 85, 0.2);
+            color: var(--primary);
+            border-left: 2px solid var(--primary);
+        }
+
+        .role-member {
+            background-color: rgba(40, 176, 229, 0.2);
+            color: var(--accent);
+            border-left: 2px solid var(--accent);
+        }
+
+        .role-substitute {
+            background-color: rgba(255, 206, 86, 0.2);
+            color: var(--warning);
+            border-left: 2px solid var(--warning);
+        }
+
+        .player-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .player-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .player-info-item i {
+            color: var(--accent);
+            width: 20px;
+            text-align: center;
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            width: 100%;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--accent);
+            border-top: 4px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            padding: 2rem;
+            background: rgba(255, 70, 85, 0.1);
+            border: 2px solid var(--primary);
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .error-message h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .pixel-corners {
+            clip-path: polygon(
+                0 10px,
+                10px 0,
+                calc(100% - 10px) 0,
+                100% 10px,
+                100% calc(100% - 10px),
+                calc(100% - 10px) 100%,
+                10px 100%,
+                0 calc(100% - 10px)
+            );
+        }
+
+        /* 页脚样式 */
+        .footer {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            width: 100%;
+            background: rgba(15, 25, 35, 0.8);
+            border-top: 2px solid var(--accent);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        .official-link {
+            color: var(--accent);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .official-link:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-grid"></div>
+    
+    <div class="container">
+        <div class="header">
+            <img src="assets/logo.png" alt="Major赛事" class="logo">
+            <h1 class="title pixel-corners">队伍详情</h1>
+            <p class="subtitle">郑州轻工业大学第二届Major电竞赛事</p>
+        </div>
+        
+        <div id="team-content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>正在加载队伍信息...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>访问 <a href="https://zzulics.pages.dev/" target="_blank" class="official-link"><i class="fas fa-external-link-alt"></i> 郑州轻工业大学CS赛事官方网站</a></p>
+            <p class="copyright">© 2025 郑州轻工业大学第二届Major赛事组委会</p>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/teams.js"></script>
+</body>
+</html>
