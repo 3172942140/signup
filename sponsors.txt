@@ -4,7 +4,7 @@ Cloudflare | 提供赛事数据处理服务,提供网络安全保障
 claude3.5 sonnet , 3.7 sonnet | 提供ai辅助编写程序
 
 ## 赞助资金总量
-总金额 | 235元
+总金额 | 241.66元
 
 ## 资金去向
 
@@ -15,4 +15,5 @@ claude3.5 sonnet , 3.7 sonnet | 提供ai辅助编写程序
 派大星 | 赞助100元 | pdx.jpg
 瘤子 | 赞助20元 | liuzi.jpg
 Oob | 赞助10元 | obb.jpg
+小新 | 赞助6.66元 | xiaoxin.jpg
 日出 | 赞助5元 | lyg.jpg
