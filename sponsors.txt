@@ -11,10 +11,10 @@ claude3.5 sonnet , 3.7 sonnet | 提供ai辅助编写程序
 
 ## 特别鸣谢
 
+WxpCoMan | 赞助200元 | xp.jpg
 毛毛(czS) | 赞助100元 | maomao.jpg
 派大星 | 赞助100元 | pdx.jpg
 瘤子 | 赞助20元 | liuzi.jpg
 Oob | 赞助10元 | obb.jpg
 小新 | 赞助6.66元 | xiaoxin.jpg
 日出 | 赞助5元 | lyg.jpg
-WxpCoMan | 赞助200元 | xp.jpg
