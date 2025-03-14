@@ -371,33 +371,6 @@
                 padding: 1rem;
                 font-size: 1.1rem;
             }
-            .top-buttons {
-                display: none; /* 在手机端隐藏顶部按钮 */
-            }
-            .button-group {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-                padding: 1rem;
-                width: 100%;
-                max-width: 600px;
-                margin: 0 auto;
-            }
-            .button-group .action-button {
-                width: 100%;
-                margin: 0;
-            }
-            /* 在手机端显示所有按钮 */
-            .mobile-buttons {
-                display: block;
-            }
-            .mobile-buttons .action-button {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                margin: 0;
-            }
         }
 
         @media (max-width: 480px) {
@@ -683,55 +656,6 @@
             background: var(--accent-dark);
             transform: translateY(-2px);
         }
-
-        /* 基础样式 */
-        .top-buttons {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 1rem;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-        }
-
-        .action-button {
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            background: var(--secondary-light);
-            border: 2px solid var(--accent);
-            color: var(--text);
-            font-size: 1rem;
-            padding: 0.8rem 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(40, 176, 229, 0.3);
-        }
-
-        .action-button[data-action="register"] {
-            background: var(--primary);
-            border-color: var(--primary-dark);
-        }
-
-        .mobile-buttons {
-            display: none;
-            width: 100%;
-            grid-column: span 2;
-            gap: 1rem;
-        }
     </style>
 </head>
 <body>
@@ -875,12 +799,12 @@
 
     <div class="container">
         <div class="header">
-            <div class="top-buttons">
-                <a href="#" class="action-button pixel-corners" onclick="showVerifyDialog()">
+            <div style="position: absolute; top: 20px; right: 20px; display: flex; gap: 1rem;">
+                <button class="register-btn pixel-corners active" onclick="showVerifyDialog()" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--secondary-light); border: 2px solid var(--accent); font-size: 1rem; padding: 0.8rem 1.5rem; margin: 0;">
                     <i class="fas fa-users"></i> 加入比赛群
-                </a>
-                <a href="teams.html" class="action-button pixel-corners">
-                    <i class="fas fa-list"></i> 参赛队伍
+                </button>
+                <a href="teams.html" class="register-btn pixel-corners active" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--secondary-light); border: 2px solid var(--text-secondary); font-size: 1rem; padding: 0.8rem 1.5rem; margin: 0;">
+                    <i class="fas fa-users"></i> 参赛队伍
                 </a>
             </div>
             <img src="assets/logo.png" alt="Major赛事" class="logo">
@@ -916,28 +840,19 @@
             当前状态：暂未开始
         </div>
 
-        <div class="button-group">
-            <a href="event-info.html" class="action-button pixel-corners">
+        <div style="display: flex; gap: 1rem; justify-content: center; margin: 2rem 0; flex-wrap: wrap;">
+            <a href="event-info.html" class="register-btn pixel-corners active" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--accent);">
                 <i class="fas fa-info-circle"></i> 赛事详情
             </a>
-            <a href="#" class="action-button pixel-corners" data-action="register">
-                <i class="fas fa-user-plus"></i> 立即报名
-            </a>
-            <a href="poster.html" class="action-button pixel-corners">
+            <button class="register-btn pixel-corners" id="registerBtn">
+                <i class="fas fa-gamepad"></i> 立即报名
+            </button>
+            <a href="poster.html" class="register-btn pixel-corners active" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--secondary-light); border: 2px solid var(--primary);">
                 <i class="fas fa-image"></i> 宣传海报
             </a>
-            <a href="sponsors.html" class="action-button pixel-corners">
+            <a href="thanks.html" class="register-btn pixel-corners active" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--secondary-light); border: 2px solid var(--accent);">
                 <i class="fas fa-handshake"></i> 特别鸣谢
             </a>
-            <!-- 手机端显示的按钮 -->
-            <div class="mobile-buttons" style="display: none;">
-                <a href="#" class="action-button pixel-corners" onclick="showVerifyDialog()">
-                    <i class="fas fa-users"></i> 加入比赛群
-                </a>
-                <a href="teams.html" class="action-button pixel-corners">
-                    <i class="fas fa-list"></i> 参赛队伍
-                </a>
-            </div>
         </div>
     </div>
 
