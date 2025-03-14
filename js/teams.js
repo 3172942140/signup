@@ -47,6 +47,8 @@ function getRoleClass(role) {
 // 格式化日期
 function formatDate(dateString) {
     const date = new Date(dateString);
+    // 加上8小时
+    date.setHours(date.getHours() + 8);
     return date.toLocaleDateString('zh-CN', {
         year: 'numeric',
         month: '2-digit',
