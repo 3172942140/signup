@@ -1,20 +1,33 @@
 // 倒计时目标时间（UTC+8）
 const TARGET_DATE = new Date('2025-03-15T00:00:00+08:00');
 
+// 本地时间与服务器时间的差值（毫秒）
+let timeOffset = 0;
+
 // 获取准确的世界时间
 async function getWorldTime() {
     try {
         const response = await fetch('https://worldtimeapi.org/api/timezone/Asia/Shanghai');
         const data = await response.json();
-        return new Date(data.datetime);
+        const serverTime = new Date(data.datetime);
+        // 计算本地时间与服务器时间的差值
+        timeOffset = serverTime.getTime() - Date.now();
+        return serverTime;
     } catch (error) {
         console.warn('无法获取世界时间，使用本地时间', error);
+        timeOffset = 0;
         return new Date();
     }
 }
 
+// 获取当前准确时间
+function getCurrentTime() {
+    return new Date(Date.now() + timeOffset);
+}
+
 // 更新倒计时显示
-function updateCountdown(now) {
+function updateCountdown() {
+    const now = getCurrentTime();
     const timeLeft = TARGET_DATE - now;
     
     // 如果已经过了目标时间
@@ -72,20 +85,22 @@ async function initCountdown() {
     const countdownTimer = document.querySelector('.countdown-timer');
     
     try {
-        // 获取世界时间
-        const worldTime = await getWorldTime();
+        // 获取世界时间（只在初始化时获取一次）
+        await getWorldTime();
         
         // 移除加载状态
         countdownTimer.classList.remove('loading');
         
         // 首次更新倒计时
-        updateCountdown(worldTime);
+        updateCountdown();
         
         // 设置定时器，每秒更新一次
+        setInterval(updateCountdown, 1000);
+        
+        // 每10分钟同步一次时间，防止长时间误差
         setInterval(async () => {
-            const currentTime = await getWorldTime();
-            updateCountdown(currentTime);
-        }, 1000);
+            await getWorldTime();
+        }, 10 * 60 * 1000);
         
     } catch (error) {
         console.error('初始化倒计时失败', error);
