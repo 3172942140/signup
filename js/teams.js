@@ -93,6 +93,12 @@ function parsePlayers(playersStr) {
     }
 }
 
+// 掩码手机号中间四位
+function maskPhoneNumber(phone) {
+    if (!phone) return '';
+    return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+}
+
 // 创建战队卡片HTML
 function createTeamCard(team) {
     let playerCount = 0;
@@ -169,7 +175,7 @@ function createTeamDetail(team) {
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
-                        <span>电话：${team.contact_phone}</span>
+                        <span>电话：${maskPhoneNumber(team.contact_phone)}</span>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-clock"></i>
