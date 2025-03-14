@@ -430,11 +430,241 @@
             font-size: 0.9rem;
             margin-top: 0.5rem;
         }
+
+        /* 规则确认对话框样式 */
+        .rules-dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--secondary);
+            border: 2px solid var(--accent);
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+            animation: dialogFadeIn 0.3s ease-out;
+        }
+
+        @keyframes dialogFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .rules-dialog h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.8rem;
+        }
+
+        .rules-content {
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .rules-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .rules-section h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .rules-section p {
+            margin-bottom: 0.8rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .rules-section ul {
+            list-style: none;
+            margin-left: 1rem;
+        }
+
+        .rules-section li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .rules-section li::before {
+            content: '•';
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+        }
+
+        .rules-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .rules-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+        }
+
+        .rules-btn {
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .rules-accept {
+            background: var(--accent);
+            color: var(--text);
+        }
+
+        .rules-accept:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        .rules-decline {
+            background: var(--primary);
+            color: var(--text);
+        }
+
+        .rules-decline:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
     <div class="background-grid"></div>
     
+    <!-- 规则确认对话框 -->
+    <div class="rules-overlay"></div>
+    <div class="rules-dialog pixel-corners">
+        <h2>郑州轻工业大学第二届Major反恐精英比赛规则条例</h2>
+        <div class="rules-content">
+            <div class="rules-section">
+                <h3>第一章 参赛行为规范</h3>
+                <p><strong>第一条 参赛纪律</strong></p>
+                <ul>
+                    <li>1.1 严禁一切形式的不当言论与行为，包括但不限于：
+                        <ol style="list-style-type: lower-alpha; margin-left: 1.5rem;">
+                            <li>公屏文字挑衅、语音辱骂、贬低对手等言论；</li>
+                            <li>击杀后对尸体进行不当动作、喷涂挑衅图案等行为；</li>
+                            <li>故意拖延比赛时间等影响赛事进程的行为。</li>
+                        </ol>
+                    </li>
+                    <li>1.2 违规处罚规定：
+                        <ol style="list-style-type: lower-alpha; margin-left: 1.5rem;">
+                            <li>首次违规：予以警告；</li>
+                            <li>第二次违规：当局判负；</li>
+                            <li>情节严重者（涉及人身攻击、种族歧视等）：立即取消参赛资格。</li>
+                        </ol>
+                    </li>
+                </ul>
+                
+                <p><strong>第二条 参赛资格</strong></p>
+                <ul>
+                    <li>2.1 参赛选手必须为本校在籍学生，严禁任何形式的代打行为；</li>
+                    <li>2.2 一经发现代打行为：
+                        <ol style="list-style-type: lower-alpha; margin-left: 1.5rem;">
+                            <li>立即取消涉事队伍参赛资格；</li>
+                            <li>将违规行为通报全校；</li>
+                            <li>取消相关人员未来赛事参与资格。</li>
+                        </ol>
+                    </li>
+                </ul>
+                
+                <p><strong>第三条 比赛公平性</strong></p>
+                <ul>
+                    <li>3.1 严禁使用任何形式的第三方软件或修改游戏文件，包括但不限于：
+                        <ol style="list-style-type: lower-alpha; margin-left: 1.5rem;">
+                            <li>自动瞄准、透视等辅助工具；</li>
+                            <li>无后坐力脚本等改进性能的程序；</li>
+                            <li>修改游戏贴图、模型等影响公平性的行为。</li>
+                        </ol>
+                    </li>
+                    <li>3.2 反作弊措施：
+                        <ol style="list-style-type: lower-alpha; margin-left: 1.5rem;">
+                            <li>赛前必须通过组委会提供的反作弊程序检测；</li>
+                            <li>比赛期间接受裁判随时的屏幕共享检查；</li>
+                            <li>一经发现作弊，永久禁止参与校内电竞赛事。</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="rules-section">
+                <h3>第二章 争议处理办法</h3>
+                <p><strong>第四条 申诉流程</strong></p>
+                <ul>
+                    <li>4.1 申诉要求：
+                        <ol style="list-style-type: lower-alpha; margin-left: 1.5rem;">
+                            <li>必须由队长在比赛结束后1小时内提出；</li>
+                            <li>需提供详细的文字说明及相关证据材料；</li>
+                            <li>证据材料包括但不限于：比赛录像、截图等。</li>
+                        </ol>
+                    </li>
+                    <li>4.2 处理流程：
+                        <ol style="list-style-type: lower-alpha; margin-left: 1.5rem;">
+                            <li>裁判组将对申诉进行集体评议；</li>
+                            <li>在24小时内给出最终裁决；</li>
+                            <li>超出申诉时限视为自动接受比赛结果。</li>
+                        </ol>
+                    </li>
+                </ul>
+                
+                <p><strong>第五条 附则</strong></p>
+                <ul>
+                    <li>5.1 本规则的最终解释权归赛事组委会所有；</li>
+                    <li>5.2 对于规则未明确规定的特殊情况，组委会有权：
+                        <ol style="list-style-type: lower-alpha; margin-left: 1.5rem;">
+                            <li>根据公平公正原则做出临时裁定；</li>
+                            <li>在赛后公示并补充相关规则条款。</li>
+                        </ol>
+                    </li>
+                    <li>5.3 本规则自公布之日起生效。</li>
+                </ul>
+
+                <p><strong>第六条 声明与承诺</strong></p>
+                <ul>
+                    <li>6.1 参赛声明：
+                        <ol style="list-style-type: lower-alpha; margin-left: 1.5rem;">
+                            <li>本人已完整阅读并充分理解以上所有条款内容；</li>
+                            <li>本人同意遵守上述各项规定，并承担违规后果；</li>
+                            <li>本人承诺以上声明真实有效。</li>
+                        </ol>
+                    </li>
+                    <li>6.2 效力范围：
+                        <ol style="list-style-type: lower-alpha; margin-left: 1.5rem;">
+                            <li>点击"接受"按钮即视为同意本规则的全部内容；</li>
+                            <li>本规则对参赛队伍所有成员均具有约束力；</li>
+                            <li>一旦接受本规则，将在整个赛事期间持续有效。</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="rules-actions">
+            <button class="rules-btn rules-decline pixel-corners">拒绝</button>
+            <button class="rules-btn rules-accept pixel-corners">接受</button>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <div style="position: absolute; top: 20px; right: 20px;">
@@ -562,10 +792,39 @@
         
         // 添加报名按钮点击事件
         document.getElementById('registerBtn').addEventListener('click', function() {
-            // 只有当按钮处于激活状态时才跳转
+            // 只有当按钮处于激活状态时才显示规则确认对话框
             if (this.classList.contains('active')) {
-                window.location.href = 'register.html';
+                showRulesDialog();
             }
+        });
+
+        // 显示规则确认对话框
+        function showRulesDialog() {
+            document.querySelector('.rules-overlay').style.display = 'block';
+            document.querySelector('.rules-dialog').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // 防止背景滚动
+        }
+
+        // 隐藏规则确认对话框
+        function hideRulesDialog() {
+            document.querySelector('.rules-overlay').style.display = 'none';
+            document.querySelector('.rules-dialog').style.display = 'none';
+            document.body.style.overflow = ''; // 恢复背景滚动
+        }
+
+        // 添加规则确认对话框按钮事件
+        document.querySelector('.rules-accept').addEventListener('click', function() {
+            hideRulesDialog();
+            window.location.href = 'register.html';
+        });
+
+        document.querySelector('.rules-decline').addEventListener('click', function() {
+            hideRulesDialog();
+        });
+
+        // 点击遮罩层关闭对话框
+        document.querySelector('.rules-overlay').addEventListener('click', function() {
+            hideRulesDialog();
         });
     </script>
 </body>
