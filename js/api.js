@@ -121,6 +121,11 @@ async function updateTeam(teamId, token, updateData) {
     }
 }
 
+// 验证手机号
+async function verifyPhone(phone) {
+    return apiRequest('/verify-phone', 'POST', { phone });
+}
+
 // 验证修改令牌
 async function verifyEditToken(teamId, token) {
     try {
