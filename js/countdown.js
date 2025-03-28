@@ -1,6 +1,6 @@
 // 倒计时目标时间（UTC+8）- 设置为过去的时间使比赛显示为已开始
 const TARGET_DATE = new Date('2024-03-15T00:00:00+08:00');
-const MAX_TEAMS = 16; // 设置最大队伍数量限制
+const MAX_TEAMS = 0; // 设置最大队伍数量为0，强制显示报名已截止
 
 // 本地时间与服务器时间的差值（毫秒）
 let timeOffset = 0;
@@ -44,34 +44,18 @@ function updateRegistrationStatus(isFull) {
     const status = document.querySelector('.status');
     const registerBtn = document.getElementById('registerBtn');
 
-    if (isFull) {
-        // 队伍已满
-        countdownTitle.textContent = '报名已截止';
-        status.innerHTML = `
-            <i class="fas fa-stop-circle" style="color: var(--primary);"></i>
-            当前状态：报名人数已达标
-        `;
-        if (registerBtn) {
-            registerBtn.classList.remove('active');
-            registerBtn.disabled = true;
-            registerBtn.style.opacity = '0.5';
-            registerBtn.style.cursor = 'not-allowed';
-            registerBtn.title = '报名人数已达标';
-        }
-    } else {
-        // 正常报名中
-        countdownTitle.textContent = '报名进行中';
-        status.innerHTML = `
-            <i class="fas fa-check-circle" style="color: var(--success);"></i>
-            当前状态：报名进行中
-        `;
-        if (registerBtn) {
-            registerBtn.classList.add('active');
-            registerBtn.disabled = false;
-            registerBtn.style.opacity = '1';
-            registerBtn.style.cursor = 'pointer';
-            registerBtn.title = '';
-        }
+    // 强制显示报名已截止状态
+    countdownTitle.textContent = '报名已截止';
+    status.innerHTML = `
+        <i class="fas fa-stop-circle" style="color: var(--primary);"></i>
+        当前状态：报名人数已达标
+    `;
+    if (registerBtn) {
+        registerBtn.classList.remove('active');
+        registerBtn.disabled = true;
+        registerBtn.style.opacity = '0.5';
+        registerBtn.style.cursor = 'not-allowed';
+        registerBtn.title = '报名人数已达标';
     }
 }
 
